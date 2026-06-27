@@ -1,11 +1,9 @@
-FROM ghcr.io/home-assistant/aarch64-base:3.1
-
-COPY config.json /
+FROM ghcr.io/home-assistant/aarch64-base:3.18
 
 # Tools installieren
 RUN apk add --no-cache git go
 
-# Deinen Fork holen und bauen
+# Deinen Fork klonen und bauen
 RUN git clone https://github.com/rhoenvogel/noah-mqtt-cvo /app \
  && cd /app \
  && go build -o /noah-mqtt
