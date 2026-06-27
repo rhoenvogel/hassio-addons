@@ -1,5 +1,5 @@
 ARG BUILD_FROM
-FROM $BUILD_FROM
+FROM ghcr.io/home-assistant/aarch64-base:3.1
 ARG BUILD_FROM
 COPY config.json /
 RUN apk --no-cache add jq
