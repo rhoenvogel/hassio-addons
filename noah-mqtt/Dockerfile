@@ -1,9 +1,14 @@
 FROM ghcr.io/home-assistant/aarch64-base:3.18
 
-# Tools installieren
-RUN apk add --no-cache git go
+# Tools + neues Go installieren
+RUN apk add --no-cache git wget \
+ && wget https://go.dev/dl/go1.24.0.linux-arm64.tar.gz \
+ && rm -rf /usr/local/go \
+ && tar -C /usr/local -xzf go1.24.0.linux-arm64.tar.gz
 
-# Deinen Fork klonen und bauen
+ENV PATH="/usr/local/go/bin:${PATH}"
+
+# Dein Fork bauen
 RUN git clone https://github.com/rhoenvogel/noah-mqtt-cvo /app \
  && cd /app \
  && go build -o /noah-mqtt
