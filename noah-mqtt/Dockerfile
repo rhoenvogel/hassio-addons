@@ -17,4 +17,3 @@ COPY rootfs/docker-entrypoint.sh /
 RUN chmod a+x /noah-mqtt && chmod a+x /docker-entrypoint.sh
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
-``
