@@ -1,20 +1,19 @@
-FROM ghcr.io/home-assistant/aarch64-base:3.18
+FROM node:18-alpine
 
-# Tools + neues Go installieren
-RUN apk add --no-cache git wget \
- && wget https://go.dev/dl/go1.24.0.linux-arm64.tar.gz \
- && rm -rf /usr/local/go \
- && tar -C /usr/local -xzf go1.24.0.linux-arm64.tar.gz
+# Arbeitsverzeichnis
+WORKDIR /app
 
-ENV PATH="/usr/local/go/bin:${PATH}"
+# Tools
+RUN apk add --no-cache git
 
-# Dein Fork bauen
-RUN git clone https://github.com/rhoenvogel/noah-mqtt-cvo /app \
- && cd /app \
- && go build -o /noah-mqtt
+# Code holen
+RUN git clone https://github.com/rhoenvogel/noah-mqtt-cvo .
 
-# Entrypoint
-COPY rootfs/docker-entrypoint.sh /
-RUN chmod a+x /noah-mqtt && chmod a+x /docker-entrypoint.sh
+# Dependencies installieren
+RUN npm install
 
-ENTRYPOINT [ "/docker-entrypoint.sh" ]
+# TypeScript bauen
+RUN npm run build
+
+# Start
+CMD ["node", "dist/index.js"]
